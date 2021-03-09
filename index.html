@@ -21,6 +21,13 @@
                             <input type="text" placeholder="Enter Username" id="username"/>
                             <input class = 'btn' id = 'submitButton' type="submit" value="Start"/>
                         </form>  
+                    </div> 
+                <div class = "userInfo">
+                        <form id="update-user-form">
+                            <input type="hidden" value="User Id" id="userId"/> 
+                            <input type="text" placeholder="Enter Username" id="new-username"/>
+                            <input class = 'btn' id = 'update-name-submitButton' type="submit" value="Change Username"/>
+                        </form>  
                     </div>      
 
 
@@ -37,6 +44,7 @@
                     <label class = 'category' for= 'categories'>Category: </label> 
                     <select name="category" id="category">
                         <option value="sports">Sports</option>
+                        <option value="music">Music</option>
                         <option value="geography">Geography</option>
                         <option value="movies">Movies</option>
                         <option value="food">Food</option>
@@ -69,11 +77,11 @@
                 </div>
                 <p id= 'right-or-wrong'></p>
                 <div class = 'gameOver'>
-                    <h1> GAME OVER!</h1>
+                    <h1></h1>
                     <br>
                     <br>
                     <h3 class= 'userScore'></h3>
-                    <button class= 'btn tryAgain'>Try again?</button>
+                    <button class= 'btn tryAgain'>Play again?</button>
                 </div>
 
 
