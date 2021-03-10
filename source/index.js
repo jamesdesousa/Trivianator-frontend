@@ -246,17 +246,16 @@ function renderScores(score) {
     // userScoresOl.style.display = 'block'
     userScoresDiv.style.display = 'block'
     const oneScore = document.createElement('li')
-    // oneScore.setAttribute('id', '#scores')
-    oneScore.textContent = score
+    //oneScore.setAttribute('id', 'scores')
+    //oneScore.textContent = score
+    oneScore.innerHTML = `${score}   <button type="button" id=${score}>Delete Score</button`
     userScoresOl.append(oneScore)
     console.log(score)
 
-
-
-
 }
 
-//all scores button 
+//document.querySelector("div#user-scores").addEventListener("click", e =>)
+
 homeButton.addEventListener('click', (e) => {
     newUserForm.style.display = 'none'
     gameMenu.style.display = 'block'
