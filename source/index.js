@@ -234,14 +234,7 @@ scoresButton.addEventListener('click', (e) => {
     gameMenu.style.display = 'none'
     userScoresOl.innerHTML = ""
     e.preventDefault();
-    fetch("http://localhost:3000/users/scores", {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ user: currentUserId })
-    })
+    fetch(`http://localhost:3000/users/${currentUserId}/scores`)
         .then(res => res.json())
         .then(data => {
             data.forEach((score) => renderScores(score))
@@ -293,7 +286,7 @@ editNameForm.addEventListener("submit", event => {
     event.preventDefault();
     const newName = editNameForm.querySelector("input#new-username").value
     console.log(newName);
-    fetch("http://localhost:3000/users/edit",{
+    fetch(`http://localhost:3000/users/${currentUserId}/edit`,{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"
@@ -310,12 +303,8 @@ editNameForm.addEventListener("submit", event => {
 //delete user 
 deleteButton.addEventListener("click", event => {
     event.preventDefault();
-    fetch("http://localhost:3000/users", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({user_id: currentUserId})
+    fetch(`http://localhost:3000/users/${currentUserId}`, {
+        method: "DELETE"
     })
     //emulates 'logging out' and going back to the homepage
     gameMenu.style.display = 'none'
