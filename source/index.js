@@ -20,6 +20,12 @@ const tryAgainButton = document.querySelector('.tryAgain')
 const changeUsernameButton = document.querySelector('.saveButton')
 const categoryDropDown = document.querySelector("select#category")
 const editNameForm = document.querySelector("div.userInfo > form#update-user-form")
+const userScoresOl = document.querySelector('#scores')
+const userScoresHead = document.querySelector('.yourScoresHead')
+const userScoresDiv = document.querySelector('.userScores')
+const allScoresButton = document.querySelector('.allScoresButton')
+const newUserForm = document.querySelector('#update-user-form')
+const homeButton = document.querySelector('.homeButton')
 editNameForm.style.display = "none";
 let currentGameData;
 let currentUserId; 
@@ -35,6 +41,9 @@ startGameForm.addEventListener('submit', (e) => {
     startGameForm.style.display = 'none'
     gameMenu.style.display = 'block'
     settingsMenu.style.display = 'block'
+    userScoresHead.style.display = 'none'
+    userScoresDiv.style.display = 'none'
+    userScoresOl.style.display = 'none'
     e.preventDefault() 
     fetch('http://localhost:3000/users', {
         method: 'POST',
@@ -166,6 +175,9 @@ const wonGame = () =>{
     gameOver.style.display = 'block'
     userScore.style.color = 'white'
     userScore.innerText = `Final Score: ${currentGameData.score}`
+    userScoresHead.style.display = 'none'
+    userScoresDiv.style.display = 'none'
+    userScoresOl.style.display = 'none'
 }
 
 
@@ -197,6 +209,9 @@ tryAgainButton.addEventListener('click', (e) => {
     gameMenu.style.display = 'block'
     gameOver.style.display = 'none'
     userScore.style.display = 'none'
+    userScoresHead.style.display = 'none'
+    userScoresDiv.style.display = 'none'
+    userScoresOl.style.display = 'none'
 
 })
 
@@ -207,21 +222,59 @@ tryAgainButton.addEventListener('click', (e) => {
 
 //scores for user 
 scoresButton.addEventListener('click', (e) => {
+    newUserForm.style.display = 'none'
     gameMenu.style.display = 'none'
     gameStart.style.display = 'none'
+    userScoresHead.style.display = 'block'
+    userScoresDiv.style.display = 'block'
+    userScoresOl.style.display = 'block'
+    startGameForm.style.display = 'none'
+    gameOver.style.display = 'none'
+    userScore.style.display = 'none'
+    gameMenu.style.display = 'none'
+    userScoresOl.innerHTML = ""
     e.preventDefault();
     fetch("http://localhost:3000/users/scores", {
         method: "PATCH",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Accept': 'application/json'
         },
         body: JSON.stringify({ user: currentUserId })
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data) 
+            data.forEach((score) => renderScores(score))
+            }) 
         })
+
+
+function renderScores(score) {
+    // userScoresOl.style.display = 'block'
+    userScoresDiv.style.display = 'block'
+    const oneScore = document.createElement('li')
+    // oneScore.setAttribute('id', '#scores')
+    oneScore.textContent = score
+    userScoresOl.append(oneScore)
+    console.log(score)
+
+
+
+
+}
+
+//all scores button 
+homeButton.addEventListener('click', (e) => {
+    newUserForm.style.display = 'none'
+    gameMenu.style.display = 'block'
+    gameStart.style.display = 'none'
+    userScoresHead.style.display = 'none'
+    userScoresDiv.style.display = 'none'
+    userScoresOl.style.display = 'none'
 })
+
+
+
 
 
 //change username button 
@@ -230,6 +283,9 @@ changeUsernameButton.addEventListener('click', (e) => {
     gameStart.style.display = 'none'
     //startGameForm.style.display = 'block'
     editNameForm.style.display = "block";
+    userScoresHead.style.display = 'none'
+    userScoresDiv.style.display = 'none'
+    userScoresOl.style.display = 'none'
 
 })
 
