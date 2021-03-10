@@ -24,6 +24,8 @@ editNameForm.style.display = "none";
 let currentGameData;
 let currentUserId; 
 let counter = 0;
+let questionsUsedCounter = 0;
+let usedNums = [];
 
 //stretch: make text to speech an option
 
@@ -79,10 +81,11 @@ startGameButton.addEventListener("click", (event) => {
 
 
 function playGame() {
+    generateQuestion();
     if(gameStart.querySelector('input[name="answers"]:checked')){
         gameStart.querySelector('input[name="answers"]:checked').checked = false
     }
-    console.log(currentGameData.lives_remaining)
+    console.log(`counter is: ${counter}`);
     if(currentGameData.lives_remaining > 0) {
         livesCounter.innerText = `Lives: ${currentGameData.lives_remaining}`
         numberOfLives.value = `${currentGameData.lives_remaining}`
@@ -120,14 +123,14 @@ answerButton.addEventListener("click", event =>{
         rightOrWrong.style.color = 'green'
         rightOrWrong.style.display = 'block'
         setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 800)
-        ++counter;
-        if(counter === currentGameData.questions.length){
+        ++questionsUsedCounter;
+        if(questionsUsedCounter === currentGameData.questions.length){
             wonGame();
         }else{
             playGame();
         }
     }else{
-        ++counter;
+        ++questionsUsedCounter;
         rightOrWrong.innerText = "Incorrect";
         rightOrWrong.style.color = 'red'
         rightOrWrong.style.display = 'block'
@@ -135,7 +138,7 @@ answerButton.addEventListener("click", event =>{
         setTimeout(function(){livesCounter.style.color = 'white'}, 200)
         setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 800)
         currentGameData.lives_remaining -= 1;
-        if(counter === currentGameData.questions.length && currentGameData.lives_remaining > 0){
+        if(questionsUsedCounter === currentGameData.questions.length && currentGameData.lives_remaining > 0){
             wonGame();
         }else if(currentGameData.lives_remaining > 0){
             playGame();
@@ -154,7 +157,8 @@ const wonGame = () =>{
         },
         body: JSON.stringify({gameInfo: currentGameData})
     })
-    counter = 0;
+    usedNums =[];
+    questionsUsedCounter = 0;
     gameOver.querySelector("h1").textContent = `You completed all of the questions in the ${currentGameData.category.category} category!`;
     gameOver.querySelector("h1").style.color = "green";
     gameStart.style.display = 'none'
@@ -174,7 +178,8 @@ function endGame() {
         },
         body: JSON.stringify({gameInfo: currentGameData})
     })
-    counter = 0;
+    usedNums = [];
+    questionsUsedCounter = 0;
     gameOver.querySelector("h1").textContent = "GAME OVER! You ran out of lives"
     gameOver.querySelector("h1").style.color = "red";
     gameStart.style.display = 'none'
@@ -263,9 +268,15 @@ deleteButton.addEventListener("click", event => {
 })
 
 
-
-
-
+const generateQuestion = () => {
+    let num = Math.round(Math.random() * (currentGameData.questions.length - 1));
+    if (usedNums.includes(num)){
+        generateQuestion();
+    }else{
+        usedNums.push(num);
+        counter = num;
+    }
+}
 
 
 
