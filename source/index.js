@@ -241,7 +241,8 @@ editNameForm.addEventListener("submit", event => {
     })
     event.target.reset();
     editNameForm.style.display = "none";
-    startGameForm.style.display = 'block'
+    gameMenu.style.display = 'block'
+    settingsMenu.style.display = 'block'
     
 })
 
