@@ -248,13 +248,21 @@ function renderScores(score) {
     const oneScore = document.createElement('li')
     //oneScore.setAttribute('id', 'scores')
     //oneScore.textContent = score
-    oneScore.innerHTML = `${score}   <button type="button" id=${score}>Delete Score</button`
+    oneScore.innerHTML = `${score}   <button type="button" class="deletescore" id=${score}>Delete Score</button`
     userScoresOl.append(oneScore)
     console.log(score)
 
 }
 
-//document.querySelector("div#user-scores").addEventListener("click", e =>)
+document.querySelector("div#user-scores").addEventListener("click", e =>{
+    if(e.target.className === "deletescore"){
+        fetch(`http://localhost:3000/users/${currentUserId}/deletescore/${e.target.id}`,{
+            method: "DELETE"
+        })
+        e.target.parentNode.remove();
+    }
+
+})
 
 homeButton.addEventListener('click', (e) => {
     newUserForm.style.display = 'none'
