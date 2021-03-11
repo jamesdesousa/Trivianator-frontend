@@ -432,6 +432,7 @@ deleteButton.addEventListener("click", event => {
         fetch(`http://localhost:3000/users/${currentUserId}`, {
             method: "DELETE"
         })
+        musicDiv.style.display = "none";
         document.querySelector("div#user-scores").style.display = "none"
         gameMenu.style.display = 'none'
         startGameForm.style.display = 'block'
