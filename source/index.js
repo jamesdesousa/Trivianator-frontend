@@ -22,7 +22,7 @@ const categoryDropDown = document.querySelector("select#category")
 const editNameForm = document.querySelector("div.userInfo > form#update-user-form")
 const userScoresOl = document.querySelector('#scores')
 const userScoresHead = document.querySelector('.yourScoresHead')
-const userScoresDiv = document.querySelector('.userScores')
+const userScoresDiv = document.querySelector('div#user-scores')
 const allScoresButton = document.querySelector('.allScoresButton')
 const newUserForm = document.querySelector('#update-user-form')
 const homeButton = document.querySelector('.homeButton')
@@ -42,15 +42,40 @@ let currentUserName;
 //stretch: make text to speech an option
 const changeAccountDiv = document.querySelector("div#change-account");
 const changeAccountSelect = changeAccountDiv.querySelector("select#change-account-select");
-const changeConfirm = changeAccountDiv.querySelector("button#confirm-button")
+changeAccountSelect.style.display ="none";
+const changeConfirm = changeAccountDiv.querySelector("button#confirm-button");
+const correctSound = new Audio("assets/correct.wav");
+const incorrectSound = new Audio("assets/wrong.mp3");
+incorrectSound.volume = .4;
+const introSong = new Audio("assets/introsong.wav");
+const clockTickingSound = new Audio("assets/clockticking.wav");
+const musicDiv = document.querySelector("div#music");
+const muteToggle = musicDiv.querySelector("input#mute-toggle");
+musicDiv.style.display = "none";
+let introIsPlaying = false;
 
+muteToggle.addEventListener("change", e =>{
+    if(introIsPlaying){
+        introSong.pause();
+        introIsPlaying = false;
+    }else{
+        introSong.play();
+        introIsPlaying = true;
+    }
+
+})
+
+changeAccountDiv.style.display="none";
 changeConfirm.style.display = "none";
+
 changeAccountDiv.addEventListener("click", e => {
     if(e.target.id === "change-account-button"){
         console.log("change users")
         fetch("http://localhost:3000/users")
             .then(r => r.json())
             .then(data => data.forEach(createChangeAccountList))
+        changeAccountSelect.style.display ="inline"
+
         changeConfirm.style.display = "inline"
     }else if (e.target.id === "confirm-button"){
         fetch(`http://localhost:3000/users/change/${changeAccountSelect.value}`)
@@ -77,6 +102,9 @@ const createChangeAccountList = data => {
 
 // enter username to open menu event
 startGameForm.addEventListener('submit', (e) => {
+    introSong.play();
+    introIsPlaying = true;
+    musicDiv.style.display = "block";
     startGameForm.style.display = 'none'
     newUserForm.style.display = 'none'
     gameMenu.style.display = 'block'
@@ -100,6 +128,7 @@ startGameForm.addEventListener('submit', (e) => {
         currentUserId = newUserObj.id
         console.log(`currentID is: ${currentUserId} and the user ID of of who you just entered is ${newUserObj.id}`)
     })
+    changeAccountDiv.style.display="block";
     currentUserName = e.target.username.value
     startGameForm.querySelector("input#username").value = "";
     startGameForm.querySelector("input#username").placeholder = "Enter Username";
@@ -108,7 +137,9 @@ startGameForm.addEventListener('submit', (e) => {
 
 //start game
 startGameButton.addEventListener("click", (event) => {
-
+    introSong.pause();
+    introIsPlaying = false;
+    musicDiv.style.display = "none";
     event.preventDefault();
     fetch("http://localhost:3000/games", {
         method: "POST",
@@ -123,6 +154,7 @@ startGameButton.addEventListener("click", (event) => {
         .then(res => res.json())
         .then(data => {
             currentGameData = data;
+            changeAccountDiv.style.display = "none"
             playGame()
         })
     
@@ -132,6 +164,7 @@ startGameButton.addEventListener("click", (event) => {
 
 function playGame() {
     generateQuestion();
+    clockTickingSound.play();
     if(gameStart.querySelector('input[name="answers"]:checked')){
         gameStart.querySelector('input[name="answers"]:checked').checked = false
     }
@@ -169,10 +202,11 @@ answerButton.addEventListener("click", event =>{
     }
     if (guessedAnswer === currentGameData.questions[counter].correct_answer){
         currentGameData.score +=currentGameData.questions[counter].point_value
-        rightOrWrong.innerText = "Correct!"
+        correctSound.play();
+        rightOrWrong.innerHTML = "Correct!".bold()
         rightOrWrong.style.color = 'green'
         rightOrWrong.style.display = 'block'
-        setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 800)
+        setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 1200)
         ++questionsUsedCounter;
         if(questionsUsedCounter === currentGameData.questions.length){
             wonGame();
@@ -181,12 +215,13 @@ answerButton.addEventListener("click", event =>{
         }
     }else{
         ++questionsUsedCounter;
-        rightOrWrong.innerText = "Incorrect";
+        incorrectSound.play();
+        rightOrWrong.innerHTML = "Wrong!".bold();
         rightOrWrong.style.color = 'red'
         rightOrWrong.style.display = 'block'
         livesCounter.style.color = 'red'
         setTimeout(function(){livesCounter.style.color = 'white'}, 200)
-        setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 800)
+        setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 1200)
         currentGameData.lives_remaining -= 1;
         if(questionsUsedCounter === currentGameData.questions.length && currentGameData.lives_remaining > 0){
             wonGame();
@@ -200,6 +235,11 @@ answerButton.addEventListener("click", event =>{
 
 const wonGame = () =>{
      ///update backend with game info
+     musicDiv.style.display= "block";
+     clockTickingSound.pause();
+     introSong.currentTime = 0;
+     introSong.play();
+     introIsPlaying = true;
      fetch("http://localhost:3000/users/game/final",{
         method: "PATCH",
         headers:{
@@ -224,6 +264,11 @@ const wonGame = () =>{
 
 function endGame() {
     ///update backend with game info
+    musicDiv.style.display= "block";
+    clockTickingSound.pause();
+    introSong.currentTime = 0;
+    introSong.play();
+    introIsPlaying = true;
     fetch("http://localhost:3000/users/game/final",{
         method: "PATCH",
         headers:{
@@ -372,12 +417,15 @@ deleteButton.addEventListener("click", event => {
         method: "DELETE"
     })
     //emulates 'logging out' and going back to the homepage
+    userScoresDiv.style.display = 'none'
+    document.querySelector("div#user-scores").style.display = "none"
     gameMenu.style.display = 'none'
     startGameForm.style.display = 'block'
     settingsMenu.style.display = 'none'
     allTimeHeader.style.display = 'none'
     allTimeDiv.style.display = 'none'
     allTimeList.style.display = 'none'
+    changeAccountDiv.style.display="none";
 })
 
 
@@ -420,7 +468,7 @@ const renderAllTimeScores = data => {
     scoreLi.setAttribute('id', 'allTime')
     allTimeList.style.display = 'block'
     scoreLi.style.display = 'block'
-    scoreLi.innerText = `${p}. ${data["user"]["username"]} scored a ${data["score"]} in the ${data["category"]["category"]} category`
+    scoreLi.innerText = `${p}. ${data["user"]["username"]} scored a ${data["score"]} in ${data["category"]["category"]}`
     allTimeList.append(scoreLi);
     p = p + 1
 }
