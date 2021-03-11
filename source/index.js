@@ -26,6 +26,10 @@ const userScoresDiv = document.querySelector('.userScores')
 const allScoresButton = document.querySelector('.allScoresButton')
 const newUserForm = document.querySelector('#update-user-form')
 const homeButton = document.querySelector('.homeButton')
+const allTimeHighScoresButton = document.querySelector('.all-time-scores-button')
+const allTimeHeader = document.querySelector('.allTimeHeader')
+const allTimeList = document.querySelector('#all-time-list')
+const allTimeDiv = document.querySelector('#all-time-scores')
 editNameForm.style.display = "none";
 let currentGameData;
 let currentUserId; 
@@ -33,12 +37,14 @@ let counter = 0;
 let questionsUsedCounter = 0;
 let usedNums = [];
 let i = 1
+let p = 1
 //stretch: make text to speech an option
 
 
 // enter username to open menu event
 startGameForm.addEventListener('submit', (e) => {
     startGameForm.style.display = 'none'
+    newUserForm.style.display = 'none'
     gameMenu.style.display = 'block'
     settingsMenu.style.display = 'block'
     userScoresHead.style.display = 'none'
@@ -222,9 +228,13 @@ tryAgainButton.addEventListener('click', (e) => {
 
 //scores for user 
 scoresButton.addEventListener('click', (e) => {
+    i = 1
     newUserForm.style.display = 'none'
     gameMenu.style.display = 'none'
     gameStart.style.display = 'none'
+    allTimeHeader.style.display = 'none'
+    allTimeDiv.style.display = 'none'
+    allTimeList.style.display = 'none'
     userScoresHead.style.display = 'block'
     userScoresDiv.style.display = 'block'
     userScoresOl.style.display = 'block'
@@ -274,6 +284,9 @@ homeButton.addEventListener('click', (e) => {
     userScoresHead.style.display = 'none'
     userScoresDiv.style.display = 'none'
     userScoresOl.style.display = 'none'
+    allTimeHeader.style.display = 'none'
+    allTimeDiv.style.display = 'none'
+    allTimeList.style.display = 'none'
 })
 
 
@@ -289,6 +302,9 @@ changeUsernameButton.addEventListener('click', (e) => {
     userScoresHead.style.display = 'none'
     userScoresDiv.style.display = 'none'
     userScoresOl.style.display = 'none'
+    allTimeHeader.style.display = 'none'
+    allTimeDiv.style.display = 'none'
+    allTimeList.style.display = 'none'
 
 })
 
@@ -307,6 +323,9 @@ editNameForm.addEventListener("submit", event => {
     editNameForm.style.display = "none";
     gameMenu.style.display = 'block'
     settingsMenu.style.display = 'block'
+    allTimeHeader.style.display = 'none'
+    allTimeDiv.style.display = 'none'
+    allTimeList.style.display = 'none'
     
 })
 
@@ -320,6 +339,9 @@ deleteButton.addEventListener("click", event => {
     gameMenu.style.display = 'none'
     startGameForm.style.display = 'block'
     settingsMenu.style.display = 'none'
+    allTimeHeader.style.display = 'none'
+    allTimeDiv.style.display = 'none'
+    allTimeList.style.display = 'none'
 })
 
 
@@ -333,7 +355,22 @@ const generateQuestion = () => {
     }
 }
 
-document.querySelector("button#all-time-scores-button").addEventListener("click", e =>{
+allTimeHighScoresButton.addEventListener("click", e =>{
+    p = 1
+    newUserForm.style.display = 'none'
+    gameMenu.style.display = 'none'
+    gameStart.style.display = 'none'
+    allTimeHeader.style.display = 'block'
+    allTimeDiv.style.display = 'block'
+    allTimeList.style.display = 'block'
+    startGameForm.style.display = 'none'
+    gameOver.style.display = 'none'
+    userScore.style.display = 'none'
+    gameMenu.style.display = 'none'
+    userScoresHead.style.display = 'none'
+    userScoresDiv.style.display = 'none'
+    userScoresOl.style.display = 'none'
+    allTimeList.innerHTML = ""
     fetch("http://localhost:3000/highscores")
         .then(r => r.json())
         .then(data => {
@@ -344,9 +381,12 @@ document.querySelector("button#all-time-scores-button").addEventListener("click"
 
 const renderAllTimeScores = data => {
     const scoreLi = document.createElement("li")
-    scoreLi.innerText = `${data["user"]["username"]} scored a ${data["score"]} in the ${data["category"]["category"]} category`
-    document.querySelector("ol#all-time-list").append(scoreLi);
-
+    scoreLi.setAttribute('id', 'allTime')
+    allTimeList.style.display = 'block'
+    scoreLi.style.display = 'block'
+    scoreLi.innerText = `${p}. ${data["user"]["username"]} scored a ${data["score"]} in the ${data["category"]["category"]} category`
+    allTimeList.append(scoreLi);
+    p = p + 1
 }
 
 
