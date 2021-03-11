@@ -84,7 +84,7 @@ body {
 .userScore {
     font-size: 30px;
     position: absolute;
-    top: 70%;
+    top: 75%;
     left: 50%;
     color: red;
     transform: translate(-50%, -50%)
@@ -186,13 +186,14 @@ body {
     top: 3%;
 }
 
-.category {
-    display: none;
-    font-size: 20px;
-    position: relative;
-    height: 90px;
-    left: 90%;
-    /* transform: translate(-50%, -50%); */
+#category {
+    display: block;
+    font-size: 13px;
+    position: absolute;
+    top: 85%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    
 }
 
 /************************************************ button stuff ******************************************/
@@ -219,6 +220,15 @@ body {
     
 }
 
+#hint-button {
+    content: "";
+    position: absolute;
+    left: 5%;
+    background: transparent; 
+    transition: 0.8s;
+    top: 47.5%; 
+   
+}
 
 .btn:hover{
     color: white;

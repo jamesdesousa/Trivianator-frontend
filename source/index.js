@@ -53,7 +53,7 @@ const musicDiv = document.querySelector("div#music");
 const muteToggle = musicDiv.querySelector("input#mute-toggle");
 musicDiv.style.display = "none";
 let introIsPlaying = false;
-const hintButton = document.querySelector("button#hint-button")
+const hintButton = document.querySelector("#hint-button")
 
 hintButton.addEventListener("click", e => {
     window.alert(`${currentGameData.questions[counter].hint}`);
@@ -263,6 +263,7 @@ const wonGame = () =>{
     gameStart.style.display = 'none'
     settingsMenu.style.display = 'block'
     gameOver.style.display = 'block'
+    userScore.style.display = 'block'
     userScore.style.color = 'white'
     userScore.innerText = `Final Score: ${currentGameData.score}`
     userScoresHead.style.display = 'none'
