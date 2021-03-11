@@ -38,8 +38,42 @@ let questionsUsedCounter = 0;
 let usedNums = [];
 let i = 1
 let p = 1
+let currentUserName;
 //stretch: make text to speech an option
+const changeAccountDiv = document.querySelector("div#change-account");
+const changeAccountSelect = changeAccountDiv.querySelector("select#change-account-select");
+const changeConfirm = changeAccountDiv.querySelector("button#confirm-button")
 
+changeConfirm.style.display = "none";
+changeAccountDiv.addEventListener("click", e => {
+    if(e.target.id === "change-account-button"){
+        console.log("change users")
+        fetch("http://localhost:3000/users")
+            .then(r => r.json())
+            .then(data => data.forEach(createChangeAccountList))
+        changeConfirm.style.display = "inline"
+    }else if (e.target.id === "confirm-button"){
+        fetch(`http://localhost:3000/users/change/${changeAccountSelect.value}`)
+            .then(r => r.json())
+            .then(data => { console.log(data)
+                currentUserId = data.id
+                currentUserName = data.username
+            })
+        changeConfirm.style.display = "none"
+        changeAccountSelect.style.display = "none"
+
+    }
+})
+
+const createChangeAccountList = data => {
+    if(data.username != currentUserName){
+        const ele = document.createElement("option");
+        ele.setAttribute("value", data.username);
+        ele.innerText = data.username;
+        changeAccountSelect.append(ele);
+    }
+
+}
 
 // enter username to open menu event
 startGameForm.addEventListener('submit', (e) => {
@@ -61,11 +95,12 @@ startGameForm.addEventListener('submit', (e) => {
             username: e.target.username.value,
         })
     })
-    .then(response => response.json())
-    .then(newUserObj => {
+        .then(response => response.json())
+        .then(newUserObj => {
         currentUserId = newUserObj.id
         console.log(`currentID is: ${currentUserId} and the user ID of of who you just entered is ${newUserObj.id}`)
     })
+    currentUserName = e.target.username.value
     startGameForm.querySelector("input#username").value = "";
     startGameForm.querySelector("input#username").placeholder = "Enter Username";
 })
@@ -320,6 +355,7 @@ editNameForm.addEventListener("submit", event => {
         body: JSON.stringify({userId: currentUserId, newName })
     })
     event.target.reset();
+    currentUserName = newName
     editNameForm.style.display = "none";
     gameMenu.style.display = 'block'
     settingsMenu.style.display = 'block'
