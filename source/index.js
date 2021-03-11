@@ -40,10 +40,10 @@ let i = 1
 let p = 1
 let currentUserName;
 //stretch: make text to speech an option
-const changeAccountDiv = document.querySelector("div#change-account");
-const changeAccountSelect = changeAccountDiv.querySelector("select#change-account-select");
+// const changeAccountDiv = document.querySelector("div#change-account");
+const changeAccountSelect = document.querySelector("select#change-account-select");
 changeAccountSelect.style.display ="none";
-const changeConfirm = changeAccountDiv.querySelector("button#confirm-button");
+const changeConfirm = document.querySelector("button#confirm-button");
 const correctSound = new Audio("assets/correct.wav");
 const incorrectSound = new Audio("assets/wrong.mp3");
 incorrectSound.volume = .4;
@@ -65,10 +65,10 @@ muteToggle.addEventListener("change", e =>{
 
 })
 
-changeAccountDiv.style.display="none";
+// changeAccountDiv.style.display="none";
 changeConfirm.style.display = "none";
 
-changeAccountDiv.addEventListener("click", e => {
+settingsMenu.addEventListener("click", e => {
     if(e.target.id === "change-account-button"){
         console.log("change users")
         fetch("http://localhost:3000/users")
