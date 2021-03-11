@@ -138,6 +138,7 @@ startGameForm.addEventListener('submit', (e) => {
 //start game
 startGameButton.addEventListener("click", (event) => {
     introSong.pause();
+    muteToggle.checked = false;
     introIsPlaying = false;
     musicDiv.style.display = "none";
     event.preventDefault();
