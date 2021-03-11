@@ -53,6 +53,14 @@ const musicDiv = document.querySelector("div#music");
 const muteToggle = musicDiv.querySelector("input#mute-toggle");
 musicDiv.style.display = "none";
 let introIsPlaying = false;
+const hintButton = document.querySelector("button#hint-button")
+
+hintButton.addEventListener("click", e => {
+    window.confirm(`${currentGameData.questions[counter].hint}`);
+    currentGameData.questions[counter].point_value /= 2
+})
+
+
 
 muteToggle.addEventListener("change", e =>{
     if(introIsPlaying){
@@ -80,7 +88,7 @@ settingsMenu.addEventListener("click", e => {
     }else if (e.target.id === "confirm-button"){
         fetch(`http://localhost:3000/users/change/${changeAccountSelect.value}`)
             .then(r => r.json())
-            .then(data => { console.log(data)
+            .then(data => {
                 currentUserId = data.id
                 currentUserName = data.username
             })
@@ -128,7 +136,7 @@ startGameForm.addEventListener('submit', (e) => {
         currentUserId = newUserObj.id
         console.log(`currentID is: ${currentUserId} and the user ID of of who you just entered is ${newUserObj.id}`)
     })
-    changeAccountDiv.style.display="block";
+    //changeAccountDiv.style.display="block";
     currentUserName = e.target.username.value
     startGameForm.querySelector("input#username").value = "";
     startGameForm.querySelector("input#username").placeholder = "Enter Username";
@@ -155,7 +163,7 @@ startGameButton.addEventListener("click", (event) => {
         .then(res => res.json())
         .then(data => {
             currentGameData = data;
-            changeAccountDiv.style.display = "none"
+            //changeAccountDiv.style.display = "none"
             playGame()
         })
     
@@ -414,19 +422,26 @@ editNameForm.addEventListener("submit", event => {
 //delete user 
 deleteButton.addEventListener("click", event => {
     event.preventDefault();
-    fetch(`http://localhost:3000/users/${currentUserId}`, {
-        method: "DELETE"
-    })
     //emulates 'logging out' and going back to the homepage
     userScoresDiv.style.display = 'none'
-    document.querySelector("div#user-scores").style.display = "none"
-    gameMenu.style.display = 'none'
-    startGameForm.style.display = 'block'
-    settingsMenu.style.display = 'none'
-    allTimeHeader.style.display = 'none'
-    allTimeDiv.style.display = 'none'
-    allTimeList.style.display = 'none'
-    changeAccountDiv.style.display="none";
+
+    //changeAccountDiv.style.display="none";
+    const confirmDeleteAccount = confirm("Delete your account?")
+    if(confirmDeleteAccount){
+        console.log("delete")
+        fetch(`http://localhost:3000/users/${currentUserId}`, {
+            method: "DELETE"
+        })
+        document.querySelector("div#user-scores").style.display = "none"
+        gameMenu.style.display = 'none'
+        startGameForm.style.display = 'block'
+        settingsMenu.style.display = 'none'
+        allTimeHeader.style.display = 'none'
+        allTimeDiv.style.display = 'none'
+        allTimeList.style.display = 'none'
+    }else {
+        console.log("dont")
+}
 })
 
 
