@@ -56,7 +56,7 @@ let introIsPlaying = false;
 const hintButton = document.querySelector("button#hint-button")
 
 hintButton.addEventListener("click", e => {
-    window.confirm(`${currentGameData.questions[counter].hint}`);
+    window.alert(`${currentGameData.questions[counter].hint}`);
     currentGameData.questions[counter].point_value /= 2
 })
 
