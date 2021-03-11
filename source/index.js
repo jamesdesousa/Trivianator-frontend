@@ -32,7 +32,7 @@ let currentUserId;
 let counter = 0;
 let questionsUsedCounter = 0;
 let usedNums = [];
-
+let i = 1
 //stretch: make text to speech an option
 
 
@@ -243,14 +243,17 @@ scoresButton.addEventListener('click', (e) => {
 
 
 function renderScores(score) {
-    // userScoresOl.style.display = 'block'
+    userScoresOl.style.display = 'block'
     userScoresDiv.style.display = 'block'
     const oneScore = document.createElement('li')
     //oneScore.setAttribute('id', 'scores')
     //oneScore.textContent = score
-    oneScore.innerHTML = `${score}   <button type="button" class="deletescore" id=${score}>Delete Score</button`
+    oneScore.setAttribute('id', 'scoresList')
+    oneScore.style.display = 'block'
+    oneScore.innerHTML = `${i}. ${score}   <button type="button" class="deletescore" id=${score}>Delete Score</button`
     userScoresOl.append(oneScore)
     console.log(score)
+    i = i+1
 
 }
 

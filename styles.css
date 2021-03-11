@@ -93,9 +93,19 @@ body {
 #scores {
     display: none;
     font-size: 50px;
-    position: relative;
+    position: absolute;
     top: 38%;
-    left: 50%;
+    left: 42%;
+    color: rgb(6, 68, 92);
+    /* transform: translate(-50%, -50%); */
+}
+
+#scoresList {
+    display: none;
+    font-size: 50px;
+    position: relative;
+    top: 9%;
+    left: 10%;
     color: rgb(6, 68, 92);
     /* transform: translate(-50%, -50%); */
 }
@@ -141,11 +151,11 @@ body {
 
 .category {
     display: none;
-    font-size: 200px;
-    position: absolute;
-    height: 70px;
-    left: 80%;
-    transform: translate(-50%, -50%);
+    font-size: 20px;
+    position: relative;
+    height: 90px;
+    left: 90%;
+    /* transform: translate(-50%, -50%); */
 }
 
 /************************************************ button stuff ******************************************/
