@@ -333,6 +333,22 @@ const generateQuestion = () => {
     }
 }
 
+document.querySelector("button#all-time-scores-button").addEventListener("click", e =>{
+    fetch("http://localhost:3000/highscores")
+        .then(r => r.json())
+        .then(data => {
+            data.forEach(renderAllTimeScores)
+            //console.log(data[0]['user']["username"])
+        })
+})
+
+const renderAllTimeScores = data => {
+    const scoreLi = document.createElement("li")
+    scoreLi.innerText = `${data["user"]["username"]} scored a ${data["score"]} in the ${data["category"]["category"]} category`
+    document.querySelector("ol#all-time-list").append(scoreLi);
+
+}
+
 
 
 
