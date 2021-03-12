@@ -225,7 +225,7 @@ answerButton.addEventListener("click", event =>{
     }else{
         ++questionsUsedCounter;
         incorrectSound.play();
-        rightOrWrong.innerHTML = "Wrong!".bold();
+        rightOrWrong.innerHTML = `Wrong! The correct answer was: ${currentGameData.questions[counter].correct_answer}`.bold();
         rightOrWrong.style.color = 'red'
         rightOrWrong.style.display = 'block'
         livesCounter.style.color = 'red'
@@ -269,6 +269,7 @@ const wonGame = () =>{
     userScoresHead.style.display = 'none'
     userScoresDiv.style.display = 'none'
     userScoresOl.style.display = 'none'
+    currentGameData = ""
 }
 
 
@@ -295,6 +296,7 @@ function endGame() {
     gameOver.style.display = 'block'
     userScore.style.color = 'white'
     userScore.innerText = `Final Score: ${currentGameData.score}`
+    currentGameData = ""
 
     //try and make logo color red 
 }
