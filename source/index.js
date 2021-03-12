@@ -78,6 +78,7 @@ changeConfirm.style.display = "none";
 
 settingsMenu.addEventListener("click", e => {
     if(e.target.id === "change-account-button"){
+        changeAccountSelect.innerHTML = ""
         console.log("change users")
         fetch("http://localhost:3000/users")
             .then(r => r.json())
@@ -295,6 +296,7 @@ function endGame() {
     settingsMenu.style.display = 'block'
     gameOver.style.display = 'block'
     userScore.style.color = 'white'
+    userScore.style.display = 'block'
     userScore.innerText = `Final Score: ${currentGameData.score}`
     currentGameData = ""
 
