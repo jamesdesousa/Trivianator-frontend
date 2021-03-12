@@ -230,7 +230,7 @@ answerButton.addEventListener("click", event =>{
         rightOrWrong.style.display = 'block'
         livesCounter.style.color = 'red'
         setTimeout(function(){livesCounter.style.color = 'white'}, 200)
-        setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 1200)
+        setTimeout(function(){ rightOrWrong.style.display = 'none'; }, 2000)
         currentGameData.lives_remaining -= 1;
         if(questionsUsedCounter === currentGameData.questions.length && currentGameData.lives_remaining > 0){
             wonGame();
@@ -352,7 +352,7 @@ function renderScores(score) {
     //oneScore.textContent = score
     oneScore.setAttribute('id', 'scoresList')
     oneScore.style.display = 'block'
-    oneScore.innerHTML = `${i}. ${score}   <button type="button" class="deletescore" id=${score}>Delete Score</button`
+    oneScore.innerHTML = `${i}. ${score["score"]} in ${score["category"]["category"]}   <button type="button" class="deletescore" id=${score["score"]}>Delete Score</button`
     userScoresOl.append(oneScore)
     console.log(score)
     i = i+1
