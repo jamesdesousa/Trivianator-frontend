@@ -53,7 +53,9 @@ const musicDiv = document.querySelector("div#music");
 const muteToggle = musicDiv.querySelector("input#mute-toggle");
 musicDiv.style.display = "none";
 let introIsPlaying = false;
+introSong.volume = .3
 const hintButton = document.querySelector("#hint-button")
+muteToggle.checked  = false
 
 hintButton.addEventListener("click", e => {
     window.alert(`${currentGameData.questions[counter].hint}`);
